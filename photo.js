@@ -16,18 +16,15 @@ const frameButtons = document.querySelectorAll("#frames button");
 const downloadButton = document.getElementById("download");
 const polaroid = document.getElementById("polaroid");
 
-// Load photos from localStorage
-const photos = JSON.parse(localStorage.getItem("capturedPhotos"));
-
-if (!photos || photos.length !== 3) {
-  alert("No photos found 😭 Please take photos first!");
-  window.location.href = "index.html";
+// Load photos from localStorage individually
+for (let i = 0; i < 3; i++) {
+  const photoData = localStorage.getItem(`capturedPhoto${i + 1}`);
+  if (!photoData) {
+    alert("No photos found 😭 Please take photos first!");
+    window.location.href = "index.html";
+  }
+  photoEls[i].src = photoData;
 }
-
-// Display photos
-photoEls.forEach((img, i) => {
-  img.src = photos[i];
-});
 
 // Frame color handling
 let frameColor = "#ffffff";
@@ -47,41 +44,48 @@ filterButtons.forEach(btn => {
   });
 });
 
-// Download photo strip
+// Download photo strip with correct aspect ratio
 downloadButton.addEventListener("click", () => {
   const captionInput = document.getElementById("caption");
 
   const padding = 20;
   const spacing = 10;
   const captionHeight = 50;
-  const photoWidth = 280;
-  const photoHeight = 210;
+  const maxPhotoWidth = 280; // max width of each photo in strip
 
-  canvas.width = photoWidth + padding * 2;
-  canvas.height =
-    photoHeight * 3 +
-    spacing * 2 +
+  // Calculate scaled heights to maintain aspect ratio
+  const scaledHeights = photoEls.map(img => {
+    const scale = maxPhotoWidth / img.naturalWidth;
+    return img.naturalHeight * scale;
+  });
+
+  const totalHeight =
+    scaledHeights.reduce((sum, h) => sum + h, 0) +
+    spacing * (photoEls.length - 1) +
     padding * 2 +
     captionHeight;
 
+  canvas.width = maxPhotoWidth + padding * 2;
+  canvas.height = totalHeight;
+
   const ctx = canvas.getContext("2d");
 
-  // Background
+  // Draw frame background
   ctx.fillStyle = frameColor;
   ctx.fillRect(0, 0, canvas.width, canvas.height);
 
-  // Draw photos
+  // Draw each photo scaled
+  let currentY = padding;
   photoEls.forEach((img, i) => {
-    ctx.drawImage(
-      img,
-      padding,
-      padding + i * (photoHeight + spacing),
-      photoWidth,
-      photoHeight
-    );
+    const scale = maxPhotoWidth / img.naturalWidth;
+    const scaledHeight = img.naturalHeight * scale;
+
+    ctx.drawImage(img, padding, currentY, maxPhotoWidth, scaledHeight);
+
+    currentY += scaledHeight + spacing;
   });
 
-  // Caption
+  // Draw caption
   ctx.font = "24px 'Fredoka One'";
   ctx.fillStyle = "#ff69b4";
   ctx.textAlign = "center";
@@ -91,7 +95,7 @@ downloadButton.addEventListener("click", () => {
     canvas.height - 20
   );
 
-  // Download image
+  // Trigger download
   const link = document.createElement("a");
   link.href = canvas.toDataURL("image/png");
   link.download = "photo-strip.png";
