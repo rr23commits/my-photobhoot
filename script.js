@@ -1,8 +1,3 @@
-/****************************
- * PHOTO CAPTURE LOGIC
- * index.html
- ****************************/
-
 // DOM elements
 const camera = document.getElementById("camera");
 const captureButton = document.getElementById("capture");
@@ -24,6 +19,9 @@ for (let i = 0; i < 3; i++) {
 // Hide retake initially
 retakeButton.style.display = "none";
 
+// Disable customize until capture
+customizeButton.disabled = true;
+
 // Start camera
 navigator.mediaDevices.getUserMedia({ video: true })
   .then(stream => camera.srcObject = stream)
@@ -43,6 +41,12 @@ function createHeart() {
 // Capture 3 photos
 captureButton.addEventListener("click", async () => {
   captureButton.disabled = true;
+  customizeButton.disabled = true;
+
+  // Clear old photos immediately
+  localStorage.removeItem("capturedPhotos");
+
+  let capturedPhotos = []; // Array to store all 3 photos
 
   for (let i = 0; i < 3; i++) {
     let count = 3;
@@ -68,8 +72,8 @@ captureButton.addEventListener("click", async () => {
 
           const imageData = canvas.toDataURL("image/png");
 
-          // Save each photo individually
-          localStorage.setItem(`capturedPhoto${i + 1}`, imageData);
+          // Save to array
+          capturedPhotos.push(imageData);
 
           // Show preview
           photoImgs[i].src = imageData;
@@ -81,6 +85,12 @@ captureButton.addEventListener("click", async () => {
     });
   }
 
+  // Save all 3 photos as an array in localStorage
+  localStorage.setItem("capturedPhotos", JSON.stringify(capturedPhotos));
+
+  // Enable customize button
+  customizeButton.disabled = false;
+
   // Hide camera, show retake
   camera.style.display = "none";
   retakeButton.style.display = "inline-block";
@@ -88,13 +98,12 @@ captureButton.addEventListener("click", async () => {
 
 // Retake photos
 retakeButton.addEventListener("click", () => {
-  // Remove all stored photos
-  for (let i = 1; i <= 3; i++) {
-    localStorage.removeItem(`capturedPhoto${i}`);
-  }
+  // Remove stored array of photos
+  localStorage.removeItem("capturedPhotos");
 
   retakeButton.style.display = "none";
   captureButton.disabled = false;
+  customizeButton.disabled = true;
   camera.style.display = "block";
 
   photoImgs.forEach(img => img.style.display = "none");
@@ -102,7 +111,7 @@ retakeButton.addEventListener("click", () => {
 
 // Customize button
 customizeButton.addEventListener("click", () => {
-  if (localStorage.getItem("capturedPhoto1")) {
+  if (localStorage.getItem("capturedPhotos")) {
     window.location.href = "photo.html";
   } else {
     alert("You need to capture photos first!");

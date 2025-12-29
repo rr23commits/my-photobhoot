@@ -16,15 +16,19 @@ const frameButtons = document.querySelectorAll("#frames button");
 const downloadButton = document.getElementById("download");
 const polaroid = document.getElementById("polaroid");
 
-// Load photos from localStorage individually
-for (let i = 0; i < 3; i++) {
-  const photoData = localStorage.getItem(`capturedPhoto${i + 1}`);
-  if (!photoData) {
-    alert("No photos found 😭 Please take photos first!");
-    window.location.href = "index.html";
-  }
-  photoEls[i].src = photoData;
+// Load latest captured photos from localStorage array
+const photos = JSON.parse(localStorage.getItem("capturedPhotos"));
+
+// Validate photos
+if (!photos || photos.length !== 3) {
+  alert("No photos found 😭 Please take photos first!");
+  window.location.href = "index.html";
 }
+
+// Display photos in the strip
+photoEls.forEach((img, i) => {
+  img.src = photos[i];
+});
 
 // Frame color handling
 let frameColor = "#ffffff";
@@ -51,7 +55,7 @@ downloadButton.addEventListener("click", () => {
   const padding = 20;
   const spacing = 10;
   const captionHeight = 50;
-  const maxPhotoWidth = 280; // max width of each photo in strip
+  const maxPhotoWidth = 280;
 
   // Calculate scaled heights to maintain aspect ratio
   const scaledHeights = photoEls.map(img => {
@@ -79,9 +83,7 @@ downloadButton.addEventListener("click", () => {
   photoEls.forEach((img, i) => {
     const scale = maxPhotoWidth / img.naturalWidth;
     const scaledHeight = img.naturalHeight * scale;
-
     ctx.drawImage(img, padding, currentY, maxPhotoWidth, scaledHeight);
-
     currentY += scaledHeight + spacing;
   });
 
