@@ -1,3 +1,9 @@
+/***********************
+ * CAMERA CAPTURE LOGIC
+ * index.html
+ ***********************/
+
+// DOM elements
 const camera = document.getElementById("camera");
 const captureButton = document.getElementById("capture");
 const retakeButton = document.getElementById("retake");
@@ -5,17 +11,17 @@ const customizeButton = document.getElementById("customize");
 const canvas = document.getElementById("canvas");
 const countdown = document.getElementById("countdown");
 
-// Create preview images for the three-shot strip
+// Create preview images for 3-photo strip
 let photoImgs = [];
 for (let i = 0; i < 3; i++) {
-  let img = document.createElement("img");
-  img.id = `photo-preview-${i}`;
+  const img = document.createElement("img");
   img.className = "strip-photo";
+  img.style.display = "none";
   document.querySelector(".camera-container").appendChild(img);
   photoImgs.push(img);
 }
 
-// Hide retake initially
+// Hide retake button initially
 retakeButton.style.display = "none";
 
 // Start camera
@@ -23,18 +29,18 @@ navigator.mediaDevices.getUserMedia({ video: true })
   .then(stream => camera.srcObject = stream)
   .catch(err => console.error("Camera error:", err));
 
-//floating heart function
+// Floating heart animation
 function createHeart() {
-  const heart = document.createElement('div');
-  heart.className = 'heart';
-  heart.textContent = '💖';
-  heart.style.left = Math.random() * window.innerWidth + 'px';
-  heart.style.fontSize = 20 + Math.random() * 30 + 'px';
+  const heart = document.createElement("div");
+  heart.className = "heart";
+  heart.textContent = "💖";
+  heart.style.left = Math.random() * window.innerWidth + "px";
+  heart.style.fontSize = 20 + Math.random() * 30 + "px";
   document.body.appendChild(heart);
   setTimeout(() => heart.remove(), 2000);
 }
 
-//capture 3 hearts
+// Capture 3 photos with countdown
 captureButton.addEventListener("click", async () => {
   captureButton.disabled = true;
   let photos = [];
@@ -48,17 +54,18 @@ captureButton.addEventListener("click", async () => {
       const interval = setInterval(() => {
         count--;
         createHeart();
+
         if (count > 0) {
           countdown.textContent = count;
         } else {
           clearInterval(interval);
           countdown.style.display = "none";
 
-          // Capture photo
+          // Capture frame from video
           canvas.width = camera.videoWidth;
           canvas.height = camera.videoHeight;
           const ctx = canvas.getContext("2d");
-          ctx.drawImage(camera, 0, 0, canvas.width, canvas.height);
+          ctx.drawImage(camera, 0, 0);
 
           const imageData = canvas.toDataURL("image/png");
           photos.push(imageData);
@@ -73,32 +80,23 @@ captureButton.addEventListener("click", async () => {
     });
   }
 
-  // Store all 3 photos in localStorage
-  localStorage.setItem("capturedPhoto1", photos[0]);
-  localStorage.setItem("capturedPhoto2", photos[1]);
-  localStorage.setItem("capturedPhoto3", photos[2]);
+  // Store all photos in localStorage (PERSISTENT ACROSS PAGES)
+  localStorage.setItem("capturedPhotos", JSON.stringify(photos));
 
-  // Hide camera, show retake
+  // UI updates
   camera.style.display = "none";
   retakeButton.style.display = "inline-block";
 });
 
-//retake photo
+// Retake photos
 retakeButton.addEventListener("click", () => {
-  localStorage.removeItem("capturedPhoto1");
-  localStorage.removeItem("capturedPhoto2");
-  localStorage.removeItem("capturedPhoto3");
-
-  retakeButton.style.display = "none";
-  captureButton.disabled = false;
-  camera.style.display = "block";
-
-  photoImgs.forEach(img => img.style.display = "none");
+  localStorage.removeItem("capturedPhotos");
+  location.reload();
 });
 
-//customize button
+// Go to customize page
 customizeButton.addEventListener("click", () => {
-  if (localStorage.getItem("capturedPhoto1")) {
+  if (localStorage.getItem("capturedPhotos")) {
     window.location.href = "photo.html";
   } else {
     alert("You need to capture photos first!");
