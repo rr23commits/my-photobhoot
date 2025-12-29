@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Customize</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link href="https://fonts.googleapis.com/css2?family=Fredoka+One&family=Quicksand&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <h1>✨ Customize Your Photobooth Strip ✨</h1>
+
+  <div class="polaroid-strip" id="polaroid"> <!-- Main polaroid -->
+  <canvas id="canvas" style="display:none;"></canvas> <!-- Hidden canvas -->
+  
+  <img id="photo1" class="strip-photo" />
+  <img id="photo2" class="strip-photo" />
+  <img id="photo3" class="strip-photo" />
+    <!-- Caption input -->
+  <input 
+    id="caption"
+    type="text"
+    placeholder="type your caption 💕"
+    maxlength="40"
+  />
+</div>
+
+
+  <!-- Filters and frames -->
+  <div id="filters">
+    <button data-filter="none">Normal</button>
+    <button data-filter="grayscale(100%)">B&W</button>
+    <button data-filter="sepia(100%)">Sepia</button>
+    <button data-filter="blur(3px)">Blurry</button>
+    <button data-filter="brightness(130%)">Bright</button>
+  </div>
+
+  <div id="frames">
+    <button data-color="#ffffff">🤍 Classic</button>
+    <button data-color="#fff0f6">🌸 Pink</button>
+    <button data-color="#fffbe6">🍰 Cream</button>
+    <button data-color="#f3edff">💜 Lavender</button>
+  </div>
+
+  <button id="download">Download 💾</button>
+
+  <script src="photo.js"></script>
+</body>
+</html>

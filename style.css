@@ -1,0 +1,221 @@
+/* GLOBAL */
+body {
+  margin: 0;
+  padding: 0;
+  font-family: 'Quicksand', sans-serif;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: linear-gradient(135deg, #ffe6f0, #ffd6e8);
+  flex-direction: column;
+  min-height: 100vh;
+  overflow-x: hidden;
+  overflow-y: auto;
+}
+
+/* CAMERA PAGE */
+.camera-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+}
+
+/* Camera + Preview */
+video,
+#photo-preview {
+  width: 85vw;
+  max-width: 600px;
+  border-radius: 25px;
+  border: 5px dashed #ffb6c1;
+  box-shadow: 0 0 25px rgba(255,182,193,0.5);
+  margin-bottom: 25px;
+  transition: all 0.3s ease;
+}
+
+/* Countdown */
+#countdown {
+  position: absolute;
+  top: 30%;
+  font-size: 120px;
+  font-family: 'Fredoka One', cursive;
+  color: #ff69b4;
+  text-shadow: 2px 2px 15px white;
+  display: none;
+  pointer-events: none;
+  z-index: 10;
+}
+
+/* Buttons container */
+.buttons {
+  display: flex;
+  gap: 15px;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+/* Cute buttons for capture/customize */
+button {
+  padding: 15px 30px;
+  border-radius: 50px;
+  border: none;
+  font-size: 18px;
+  font-family: 'Fredoka One', cursive;
+  background: linear-gradient(135deg, #ff7eb9, #ff65a3);
+  color: white;
+  cursor: pointer;
+  box-shadow: 0 5px 15px rgba(255,182,193,0.5);
+  transition: all 0.25s ease;
+}
+
+button:hover {
+  transform: scale(1.15) rotate(-2deg);
+  box-shadow: 0 8px 25px rgba(255,182,193,0.6);
+}
+
+/* FLOATING HEARTS */
+.heart {
+  position: absolute;
+  font-size: 24px;
+  animation: float 2s ease-out forwards;
+}
+
+@keyframes float {
+  0% { opacity: 1; transform: translateY(0) scale(1); }
+  100% { opacity: 0; transform: translateY(-120px) scale(1.5); }
+}
+
+/* Add sparkles behind camera */
+.camera-container::before {
+  content: "✨";
+  position: absolute;
+  font-size: 40px;
+  top: -20px;
+  left: 10%;
+  animation: sparkle 2s infinite alternate;
+  opacity: 0.7;
+}
+
+.camera-container::after {
+  content: "🌸";
+  position: absolute;
+  font-size: 35px;
+  bottom: -10px;
+  right: 15%;
+  animation: sparkle 3s infinite alternate-reverse;
+  opacity: 0.7;
+}
+
+@keyframes sparkle {
+  0% { transform: translateY(0) rotate(0deg); }
+  50% { transform: translateY(-10px) rotate(15deg); }
+  100% { transform: translateY(0) rotate(-15deg); }
+}
+
+/* POLAROID FRAME */
+.polaroid {
+  position: relative;
+  background: #fff; /* default frame */
+  padding: 20px 20px 50px;
+  border-radius: 20px;
+  box-shadow: 0 15px 40px rgba(0,0,0,0.25);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin: 20px;
+  transition: background 0.3s ease;
+}
+
+/* Photo inside polaroid */
+.polaroid img {
+  width: 80vw;
+  max-width: 500px;
+  border-radius: 15px;
+  border: 5px solid #fff;
+  box-shadow: 0 5px 20px rgba(255,182,193,0.4);
+}
+
+/* CAPTION INPUT */
+#caption {
+  margin-top: 15px;
+  padding: 12px 18px;
+  border: 3px dashed #ffb6c1;
+  border-radius: 25px;
+  outline: none;
+  text-align: center;
+  font-family: 'Fredoka One', cursive;
+  font-size: 18px;
+  color: #ff69b4;
+  width: 90%;
+  max-width: 280px;
+  background: linear-gradient(135deg, #fff0f6, #ffe6f0);
+  box-shadow: 0 4px 15px rgba(255,182,193,0.4);
+  transition: all 0.3s ease;
+  letter-spacing: 1px;
+}
+
+#caption::placeholder {
+  color: #ffc0de;
+  font-style: italic;
+  letter-spacing: 1px;
+}
+
+#caption:focus {
+  border-color: #ff69b4;
+  box-shadow: 0 0 12px rgba(255,105,180,0.6);
+  background: linear-gradient(135deg, #ffe6f0, #fff5f8);
+  transform: scale(1.05);
+}
+
+
+/* Frame buttons hover effect */
+#frames button:hover {
+  transform: scale(1.1) rotate(-1deg);
+  box-shadow: 0 5px 15px rgba(255,182,193,0.4);
+}
+
+/* Photobooth strip */
+.polaroid-strip {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background: #fff;
+  padding: 15px 15px 35px;
+  border-radius: 15px;
+  box-shadow: 0 12px 25px rgba(0,0,0,0.25);
+  margin: 20px auto;
+  max-width: 320px; /* smaller width to fit screen */
+}
+
+/* Each photo in the strip */
+.strip-photo {
+  width: 90%;  /* smaller than full width */
+  max-width: 280px; /* enforce max width */
+  border-radius: 10px;
+  border: 4px solid #fff;
+  margin: 6px 0;  /* space between photos */
+  box-shadow: 0 4px 15px rgba(255,182,193,0.4);
+}
+
+/* CUSTOMIZE PAGE HEADING */
+h1 {
+  font-family: 'Fredoka One', cursive;
+  color: #ff69b4;
+  text-shadow: 2px 2px 12px #fff, 0 0 10px #ffb6c1;
+  text-align: center;
+  font-size: 2.2rem;
+  margin-top: 20px;
+  letter-spacing: 2px;
+  background: linear-gradient(135deg, #ffe6f0, #fff0f6);
+  padding: 10px 25px;
+  border-radius: 25px;
+  display: inline-block;
+  box-shadow: 0 8px 25px rgba(255,182,193,0.4);
+  transition: transform 0.3s ease;
+}
+
+h1:hover {
+  transform: scale(1.05) rotate(-1deg);
+  box-shadow: 0 10px 30px rgba(255,182,193,0.5);
+}

@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Cute Photobooth</title>
+  <link href="https://fonts.googleapis.com/css2?family=Fredoka+One&family=Quicksand&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="camera-container"> <!-- Camera -->
+    <video id="camera" autoplay></video> <!-- Live camera feed -->
+    <canvas id="canvas" style="display:none;"></canvas>
+    
+    <div id="countdown"></div> <!-- Countdown -->
+
+    <div class="buttons"> <!-- all the buttons -->
+      <button id="capture" class="cute-btn">📸 Capture</button>
+      <button id="retake" class="cute-btn">🔄 Retake</button>
+      <button id="customize" class="cute-btn">✨ Customize</button>
+    </div>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
