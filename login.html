@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Sign In — My PhotoBhoot</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Newsreader:opsz,wght@6..72,400;6..72,500&family=IBM+Plex+Mono:wght@400;500;600&display=swap"
+    rel="stylesheet"
+  />
+  <link rel="stylesheet" href="/style.css" />
+</head>
+<body class="app">
+  <header class="topbar">
+    <div class="topbar__left">
+      <span class="brand-mark" aria-hidden="true"></span>
+      <span class="wordmark">My PhotoBhoot</span>
+    </div>
+    <nav class="topbar__nav" aria-label="Primary">
+      <a href="/index.html" class="nav-link">Booth</a>
+    </nav>
+  </header>
+
+  <main class="auth-page">
+    <div class="auth-card">
+      <span class="mono-label mono-label--muted">Members</span>
+      <h1 class="auth-card__title">Sign in to your gallery</h1>
+      <p class="auth-card__desc">
+        Save your developed strips and see them on any device.
+      </p>
+      <button id="google-signin" class="btn btn--ink">Continue with Google</button>
+      <p id="login-status" class="auth-card__status" role="alert"></p>
+    </div>
+  </main>
+
+  <script type="module" src="/src/login.js"></script>
+</body>
+</html>

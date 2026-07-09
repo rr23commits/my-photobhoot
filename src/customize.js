@@ -4,6 +4,7 @@
  ****************************/
 import { composeStrip } from "./strip.js";
 import { loadPhotos, clearPhotos, loadSettings } from "./storage.js";
+import { supabase, getUser, isConfigured, STRIPS_BUCKET } from "./supabase.js";
 import {
   FILM_STOCKS,
   DEFAULT_STOCK,
@@ -22,6 +23,7 @@ const polaroid = document.getElementById("polaroid");
 const stockName = document.getElementById("stock-name");
 const stockDesc = document.getElementById("stock-desc");
 const shareBtn = document.getElementById("share");
+const saveBtn = document.getElementById("save-gallery");
 const discardBtn = document.getElementById("discard");
 const sessionId = document.getElementById("session-id");
 const recTimer = document.getElementById("rec-timer");
@@ -133,6 +135,50 @@ shareBtn.addEventListener("click", async () => {
     link.click();
     URL.revokeObjectURL(link.href);
   }, "image/png");
+});
+
+// --- Save to Gallery (Supabase) ----------------------------------------
+saveBtn.addEventListener("click", async () => {
+  if (!isConfigured()) {
+    alert("Gallery isn't set up yet — add your Supabase anon key to src/config.js.");
+    return;
+  }
+  const user = await getUser();
+  if (!user) {
+    window.location.href = "/login.html"; // dedicated sign-in page
+    return;
+  }
+
+  const original = saveBtn.textContent;
+  saveBtn.disabled = true;
+  saveBtn.textContent = "Saving…";
+  try {
+    const built = await buildStrip();
+    const blob = await new Promise((res) => built.toBlob(res, "image/png"));
+    const path = `${user.id}/${Date.now()}.png`;
+
+    const { error: upErr } = await supabase.storage
+      .from(STRIPS_BUCKET)
+      .upload(path, blob, { contentType: "image/png" });
+    if (upErr) throw upErr;
+
+    const { data: pub } = supabase.storage.from(STRIPS_BUCKET).getPublicUrl(path);
+    const { error: insErr } = await supabase.from("strips").insert({
+      user_id: user.id,
+      image_url: pub.publicUrl,
+      caption: captionInput.value,
+      film_stock: selectedStock.id,
+      frame: selectedFrame.id,
+    });
+    if (insErr) throw insErr;
+
+    window.location.href = "/gallery.html";
+  } catch (err) {
+    console.error("Save failed:", err);
+    alert(`Couldn't save to gallery: ${err.message}`);
+    saveBtn.disabled = false;
+    saveBtn.textContent = original;
+  }
 });
 
 // --- Discard & Retake --------------------------------------------------

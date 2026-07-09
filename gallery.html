@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Gallery — My PhotoBhoot</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Newsreader:opsz,wght@6..72,400;6..72,500&family=IBM+Plex+Mono:wght@400;500;600&display=swap"
+    rel="stylesheet"
+  />
+  <link rel="stylesheet" href="/style.css" />
+</head>
+<body class="app">
+  <header class="topbar">
+    <div class="topbar__left">
+      <span class="brand-mark" aria-hidden="true"></span>
+      <span class="wordmark">Gallery</span>
+    </div>
+    <nav class="topbar__nav" aria-label="Primary">
+      <a href="/index.html" class="nav-link">Booth</a>
+      <span id="user-email" class="mono-label mono-label--muted"></span>
+      <button id="signout" class="nav-link">Sign out</button>
+    </nav>
+  </header>
+
+  <main class="gallery">
+    <div class="gallery__head">
+      <span class="mono-label mono-label--muted">Your Strips</span>
+      <h1 class="gallery__title">Saved Gallery</h1>
+    </div>
+    <p id="gallery-empty" class="gallery__empty" hidden>
+      No strips yet. Head to the booth and save your first one.
+    </p>
+    <div id="gallery-grid" class="gallery__grid"></div>
+  </main>
+
+  <script type="module" src="/src/gallery.js"></script>
+</body>
+</html>
