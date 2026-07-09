@@ -66,7 +66,13 @@ FILM_STOCKS.forEach((stock) => {
   const btn = document.createElement("button");
   btn.className = "chip";
   btn.dataset.stock = stock.id;
-  btn.innerHTML = `<span class="chip__name">${stock.name}</span><span class="chip__stock mono-label mono-label--muted">${stock.stock}</span>`;
+  const nameEl = document.createElement("span");
+  nameEl.className = "chip__name";
+  nameEl.textContent = stock.name;
+  const stockEl = document.createElement("span");
+  stockEl.className = "chip__stock mono-label mono-label--muted";
+  stockEl.textContent = stock.stock;
+  btn.append(nameEl, stockEl);
   btn.addEventListener("click", () => applyStock(stock));
   filtersEl.appendChild(btn);
 });

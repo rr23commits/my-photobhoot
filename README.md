@@ -9,18 +9,18 @@ auth, storage, and the gallery database.
 
 ## Run locally
 
-The app is native ES modules, so any static server works — no build needed:
-
-```bash
-python3 -m http.server 4173
-# open http://localhost:4173
-```
-
-Or with the Vite dev server (hot reload):
+The Supabase client is bundled by Vite, so a build step is required:
 
 ```bash
 npm install
-npm run dev
+npm run dev        # dev server with hot reload
+# open the URL it prints (e.g. http://localhost:5173)
+```
+
+To preview the production build:
+
+```bash
+npm run build && npm run preview
 ```
 
 Run the logic tests:
@@ -70,8 +70,9 @@ scripts/smoke.mjs         node logic tests
 - **Database:** a `strips` table (`user_id`, `image_url`, `caption`,
   `film_stock`, `frame`, `created_at`) with row-level security so each user
   sees only their own strips.
-- **Storage:** a public `strips` bucket holding the composed PNGs, with
-  insert/delete policies scoped to each user's folder.
+- **Storage:** a **private** `strips` bucket holding the composed PNGs, read
+  via short-lived signed URLs, with select/insert/delete policies scoped to
+  each user's folder.
 - Set your project URL and publishable (anon) key in `src/config.js`.
 
 ## Deploy (Vercel)

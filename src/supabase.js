@@ -1,9 +1,9 @@
 /****************************
  * SUPABASE CLIENT
- * Loaded from the ESM CDN so the app needs no build step. Swap for the
- * npm package (@supabase/supabase-js) if you add a bundler later.
+ * Bundled from the npm package by Vite (pinned via package-lock), so no
+ * third-party CDN executes in our origin.
  ****************************/
-import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
+import { createClient } from "@supabase/supabase-js";
 import { SUPABASE_URL, SUPABASE_ANON_KEY } from "./config.js";
 
 export const supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY, {
