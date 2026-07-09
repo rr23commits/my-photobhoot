@@ -35,7 +35,13 @@ const LAYOUT = {
 // (CSS filters do NOT transfer to canvas on their own).
 export function composeStrip(
   canvas,
-  { photos, filterCss = "none", caption = "", background = "#ffffff" }
+  {
+    photos,
+    filterCss = "none",
+    caption = "",
+    background = "#ffffff",
+    captionColor = "#141414",
+  }
 ) {
   const { padding, spacing, captionHeight, maxPhotoWidth } = LAYOUT;
 
@@ -65,7 +71,7 @@ export function composeStrip(
   ctx.filter = "none"; // reset before drawing the caption
 
   ctx.font = "16px 'IBM Plex Mono', monospace";
-  ctx.fillStyle = "#141414";
+  ctx.fillStyle = captionColor;
   ctx.textAlign = "center";
   ctx.fillText(
     (caption || "MY PHOTOBHOOT").toUpperCase(),

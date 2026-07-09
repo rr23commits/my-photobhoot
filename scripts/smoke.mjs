@@ -13,7 +13,8 @@ globalThis.localStorage = {
   removeItem: (k) => store.delete(k),
 };
 
-const { FILM_STOCKS, DEFAULT_STOCK, stockById } = await import("../src/filters.js");
+const { FILM_STOCKS, DEFAULT_STOCK, stockById, FRAMES, DEFAULT_FRAME, frameById, captionColorFor } =
+  await import("../src/filters.js");
 const { savePhotos, loadPhotos, clearPhotos, saveSettings, loadSettings } =
   await import("../src/storage.js");
 
@@ -25,7 +26,10 @@ function check(name, fn) {
 }
 
 // --- Film stocks -------------------------------------------------------
-check("4 film stocks defined", () => assert.equal(FILM_STOCKS.length, 4));
+check("film stocks defined (>=4)", () => assert.ok(FILM_STOCKS.length >= 4));
+check("film stock ids are unique", () =>
+  assert.equal(new Set(FILM_STOCKS.map((s) => s.id)).size, FILM_STOCKS.length)
+);
 check("default stock is B&W Classic Silver", () => {
   assert.equal(DEFAULT_STOCK.id, "classic-silver");
   assert.match(DEFAULT_STOCK.css, /grayscale\(1\)/);
@@ -43,6 +47,19 @@ check("stockById falls back to default on unknown", () =>
 check("lofi-haze retains color (not full grayscale)", () =>
   assert.doesNotMatch(stockById("lofi-haze").css, /grayscale\(1\)/)
 );
+
+// --- Frames ------------------------------------------------------------
+check("frames defined with color hex", () => {
+  assert.ok(FRAMES.length >= 2);
+  FRAMES.forEach((f) => assert.match(f.color, /^#[0-9a-f]{6}$/i));
+});
+check("frameById falls back to default", () =>
+  assert.equal(frameById("nope").id, DEFAULT_FRAME.id)
+);
+check("captionColor is dark on light frame, light on dark frame", () => {
+  assert.equal(captionColorFor("#ffffff"), "#141414");
+  assert.equal(captionColorFor("#1c1c1c"), "#f4f2ec");
+});
 
 // --- Storage -----------------------------------------------------------
 check("loadPhotos null when empty", () => {

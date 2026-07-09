@@ -4,12 +4,21 @@
  ****************************/
 import { composeStrip } from "./strip.js";
 import { loadPhotos, clearPhotos, loadSettings } from "./storage.js";
-import { FILM_STOCKS, DEFAULT_STOCK, stockById } from "./filters.js";
+import {
+  FILM_STOCKS,
+  DEFAULT_STOCK,
+  stockById,
+  FRAMES,
+  DEFAULT_FRAME,
+  captionColorFor,
+} from "./filters.js";
 
 const canvas = document.getElementById("canvas");
 const photoEls = [0, 1, 2].map((i) => document.getElementById(`photo-${i}`));
 const captionInput = document.getElementById("caption");
 const filtersEl = document.getElementById("filters");
+const framesEl = document.getElementById("frames");
+const polaroid = document.getElementById("polaroid");
 const stockName = document.getElementById("stock-name");
 const stockDesc = document.getElementById("stock-desc");
 const shareBtn = document.getElementById("share");
@@ -65,6 +74,30 @@ FILM_STOCKS.forEach((stock) => {
 const startStock = loadSettings().bw === false ? stockById("lofi-haze") : DEFAULT_STOCK;
 applyStock(startStock);
 
+// --- Frame / background selection --------------------------------------
+let selectedFrame = DEFAULT_FRAME;
+
+function applyFrame(frame) {
+  selectedFrame = frame;
+  polaroid.style.background = frame.color;
+  framesEl.querySelectorAll("button").forEach((btn) => {
+    btn.classList.toggle("is-active", btn.dataset.frame === frame.id);
+  });
+}
+
+FRAMES.forEach((frame) => {
+  const btn = document.createElement("button");
+  btn.className = "swatch";
+  btn.dataset.frame = frame.id;
+  btn.title = frame.name;
+  btn.setAttribute("aria-label", `${frame.name} frame`);
+  btn.style.background = frame.color;
+  btn.addEventListener("click", () => applyFrame(frame));
+  framesEl.appendChild(btn);
+});
+
+applyFrame(DEFAULT_FRAME);
+
 // --- Compose the strip to a canvas -------------------------------------
 async function buildStrip() {
   // Make sure the source images are decoded before reading naturalWidth.
@@ -75,6 +108,8 @@ async function buildStrip() {
     photos: photoEls,
     filterCss: selectedStock.css,
     caption: captionInput.value,
+    background: selectedFrame.color,
+    captionColor: captionColorFor(selectedFrame.color),
   });
   return canvas;
 }

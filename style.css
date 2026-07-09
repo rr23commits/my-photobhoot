@@ -411,6 +411,27 @@ body {
   color: var(--gray);
 }
 
+/* Frame swatches */
+.frames {
+  display: flex;
+  gap: 10px;
+}
+.swatch {
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  border: 1px solid var(--hair);
+  cursor: pointer;
+  padding: 0;
+  transition: transform 0.12s ease;
+}
+.swatch:hover {
+  transform: scale(1.1);
+}
+.swatch.is-active {
+  box-shadow: 0 0 0 2px var(--paper), 0 0 0 4px var(--ink);
+}
+
 /* Center preview */
 .preview-col {
   display: flex;
