@@ -6,7 +6,16 @@
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
 import { SUPABASE_URL, SUPABASE_ANON_KEY } from "./config.js";
 
-export const supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+export const supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY, {
+  auth: {
+    // PKCE keeps the session out of the URL hash (uses ?code= + a one-time
+    // exchange) instead of exposing tokens in the address bar / history.
+    flowType: "pkce",
+    detectSessionInUrl: true,
+    persistSession: true,
+    autoRefreshToken: true,
+  },
+});
 
 export const STRIPS_BUCKET = "strips";
 

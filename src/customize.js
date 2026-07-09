@@ -162,10 +162,11 @@ saveBtn.addEventListener("click", async () => {
       .upload(path, blob, { contentType: "image/png" });
     if (upErr) throw upErr;
 
-    const { data: pub } = supabase.storage.from(STRIPS_BUCKET).getPublicUrl(path);
+    // Store the storage PATH (not a public URL) — the bucket is private and
+    // the gallery mints short-lived signed URLs on read.
     const { error: insErr } = await supabase.from("strips").insert({
       user_id: user.id,
-      image_url: pub.publicUrl,
+      image_url: path,
       caption: captionInput.value,
       film_stock: selectedStock.id,
       frame: selectedFrame.id,
