@@ -14,12 +14,13 @@
 </head>
 <body class="app">
   <header class="topbar">
-    <div class="topbar__left">
+    <a class="topbar__left" href="/index.html" aria-label="PhotoBhoot home">
       <span class="brand-mark" aria-hidden="true"></span>
-      <span class="wordmark">Gallery</span>
-    </div>
+      <span class="wordmark">PhotoBhoot</span>
+    </a>
     <nav class="topbar__nav" aria-label="Primary">
-      <a href="/index.html" class="nav-link">Booth</a>
+      <a href="/booth.html" class="nav-link">Booth</a>
+      <a href="/gallery.html" class="nav-link is-active">Gallery</a>
       <span id="user-email" class="mono-label mono-label--muted"></span>
       <button id="signout" class="nav-link">Sign out</button>
     </nav>
@@ -35,6 +36,22 @@
     </p>
     <div id="gallery-grid" class="gallery__grid"></div>
   </main>
+
+  <!-- Strip viewer -->
+  <div id="viewer" class="viewer" hidden>
+    <div class="viewer__backdrop" data-close></div>
+    <div class="viewer__panel" role="dialog" aria-modal="true" aria-label="Strip viewer">
+      <button class="viewer__close" data-close aria-label="Close">&times;</button>
+      <img id="viewer-img" class="viewer__img" alt="Saved photo strip" />
+      <div class="viewer__meta">
+        <span id="viewer-meta" class="mono-label mono-label--muted"></span>
+      </div>
+      <div class="viewer__actions">
+        <button id="viewer-download" class="btn btn--ink">Download</button>
+        <button id="viewer-delete" class="btn btn--danger-outline">Delete</button>
+      </div>
+    </div>
+  </div>
 
   <script type="module" src="/src/gallery.js"></script>
 </body>

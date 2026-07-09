@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Booth Session — My PhotoBhoot</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Newsreader:opsz,wght@6..72,400;6..72,500&family=IBM+Plex+Mono:wght@400;500;600&display=swap"
+    rel="stylesheet"
+  />
+  <link rel="stylesheet" href="/style.css" />
+</head>
+<body class="app">
+  <header class="topbar">
+    <a class="topbar__left" href="/index.html" aria-label="PhotoBhoot home">
+      <span class="brand-mark" aria-hidden="true"></span>
+      <span class="wordmark">PhotoBhoot</span>
+    </a>
+    <nav class="topbar__nav" aria-label="Primary">
+      <a href="/booth.html" class="nav-link is-active">Capture</a>
+      <a href="/gallery.html" class="nav-link">Gallery</a>
+      <span class="rec" aria-live="off"><span class="rec__dot"></span>REC <span id="rec-timer">00:00</span></span>
+    </nav>
+  </header>
+
+  <main class="booth">
+    <section class="viewfinder" aria-label="Camera viewfinder">
+      <video id="camera" autoplay playsinline muted></video>
+      <span class="bracket bracket--tl"></span>
+      <span class="bracket bracket--tr"></span>
+      <span class="bracket bracket--bl"></span>
+      <span class="bracket bracket--br"></span>
+      <div id="countdown" class="countdown"></div>
+      <div id="flash-overlay" class="flash-overlay"></div>
+      <p id="permission" class="permission" hidden>
+        Camera blocked. Allow camera access and reload the page.
+      </p>
+    </section>
+
+    <aside class="strip-rail" aria-label="Current strip">
+      <div class="strip-rail__head">
+        <span id="strip-id" class="mono-label">STRIP #0000</span>
+        <span id="strip-date" class="mono-label mono-label--muted"></span>
+      </div>
+      <div class="strip-rail__slots">
+        <div class="slot"><img id="slot-0" alt="First shot" /></div>
+        <div class="slot"><img id="slot-1" alt="Second shot" /></div>
+        <div class="slot"><img id="slot-2" alt="Third shot" /></div>
+      </div>
+    </aside>
+  </main>
+
+  <footer class="controls">
+    <label class="control control--exposure">
+      <span class="mono-label">Exposure</span>
+      <input id="exposure" type="range" min="0.5" max="1.5" step="0.05" value="1" />
+    </label>
+
+    <button id="flash-toggle" class="toggle" aria-pressed="false">Flash Off</button>
+    <button id="bw-toggle" class="toggle is-on" aria-pressed="true">B&amp;W Film</button>
+
+    <button id="record" class="record" aria-label="Capture three-shot strip">
+      <span class="record__dot"></span>
+    </button>
+
+    <button id="continue" class="btn btn--primary" disabled>Export Strip &rarr;</button>
+  </footer>
+
+  <script type="module" src="/src/capture.js"></script>
+</body>
+</html>

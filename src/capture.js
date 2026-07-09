@@ -1,6 +1,6 @@
 /****************************
  * BOOTH SESSION CONTROLLER
- * index.html — live camera, exposure/flash, 3-shot capture.
+ * booth.html — live camera, exposure/flash, 3-shot capture.
  ****************************/
 import { captureFrame } from "./strip.js";
 import { savePhotos, clearPhotos, saveSettings } from "./storage.js";
@@ -142,11 +142,4 @@ recordBtn.addEventListener("click", async () => {
 // --- Continue to Selection & Save --------------------------------------
 continueBtn.addEventListener("click", () => {
   window.location.href = "/photo.html";
-});
-
-// --- Stub nav (Gallery / Settings — Phase 3, not built yet) ------------
-document.querySelectorAll("[data-stub]").forEach((el) => {
-  el.addEventListener("click", () => {
-    alert(`${el.dataset.stub} is coming soon.`);
-  });
 });

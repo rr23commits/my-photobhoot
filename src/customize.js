@@ -32,7 +32,7 @@ const recTimer = document.getElementById("rec-timer");
 const photos = loadPhotos();
 if (!photos || photos.length !== 3) {
   alert("No photos found. Please take a strip first.");
-  window.location.href = "/index.html";
+  window.location.href = "/booth.html";
   throw new Error("No captured photos in storage; redirecting to booth.");
 }
 photoEls.forEach((img, i) => (img.src = photos[i]));
@@ -185,10 +185,5 @@ saveBtn.addEventListener("click", async () => {
 discardBtn.addEventListener("click", () => {
   if (!confirm("Discard this strip and retake?")) return;
   clearPhotos();
-  window.location.href = "/index.html";
-});
-
-// --- Stubs (Phase 3 — accounts/gallery/print) --------------------------
-document.querySelectorAll("[data-stub]").forEach((el) => {
-  el.addEventListener("click", () => alert(`${el.dataset.stub} is coming soon.`));
+  window.location.href = "/booth.html";
 });
