@@ -1,49 +1,79 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>Customize</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link href="https://fonts.googleapis.com/css2?family=Fredoka+One&family=Quicksand&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="style.css">
-</head>
-<body>
-  <h1>✨ Customize Your Photobooth Strip ✨</h1>
-
-  <div class="polaroid-strip" id="polaroid"> <!-- Main polaroid -->
-  <canvas id="canvas" style="display:none;"></canvas> <!-- Hidden canvas -->
-  
-  <img id="photo1" class="strip-photo" />
-  <img id="photo2" class="strip-photo" />
-  <img id="photo3" class="strip-photo" />
-    <!-- Caption input -->
-  <input 
-    id="caption"
-    type="text"
-    placeholder="type your caption 💕"
-    maxlength="40"
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Selection &amp; Save — My PhotoBhoot</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Newsreader:opsz,wght@6..72,400;6..72,500&family=IBM+Plex+Mono:wght@400;500;600&display=swap"
+    rel="stylesheet"
   />
-</div>
+  <link rel="stylesheet" href="/style.css" />
+</head>
+<body class="app">
+  <header class="topbar">
+    <div class="topbar__left">
+      <a href="/index.html" class="back" aria-label="Back to booth">&larr;</a>
+      <span class="wordmark">Booth Session</span>
+    </div>
+    <nav class="topbar__nav" aria-label="Primary">
+      <span id="session-id" class="mono-label mono-label--muted">SESSION ID #000-00</span>
+      <span class="rec"><span class="rec__dot"></span><span id="rec-timer">00:00</span></span>
+    </nav>
+  </header>
 
+  <main class="selection">
+    <!-- Left: film stocks -->
+    <section class="filters-col" aria-label="Choose film stock">
+      <span class="mono-label mono-label--muted">Choose Filter</span>
+      <div id="filters" class="filters"></div>
 
-  <!-- Filters and frames -->
-  <div id="filters">
-    <button data-filter="none">Normal</button>
-    <button data-filter="grayscale(100%)">B&W</button>
-    <button data-filter="sepia(100%)">Sepia</button>
-    <button data-filter="blur(3px)">Blurry</button>
-    <button data-filter="brightness(130%)">Bright</button>
-  </div>
+      <div class="stock-card">
+        <span class="mono-label mono-label--muted">Film Stock</span>
+        <h2 id="stock-name" class="stock-card__name">Classic Silver</h2>
+        <p id="stock-desc" class="stock-card__desc"></p>
+      </div>
+    </section>
 
-  <div id="frames">
-    <button data-color="#ffffff">🤍 Classic</button>
-    <button data-color="#fff0f6">🌸 Pink</button>
-    <button data-color="#fffbe6">🍰 Cream</button>
-    <button data-color="#f3edff">💜 Lavender</button>
-  </div>
+    <!-- Center: strip preview -->
+    <section class="preview-col">
+      <span class="mono-label mono-label--muted">Selection &amp; Save</span>
+      <div class="polaroid-strip" id="polaroid">
+        <img id="photo-0" class="strip-photo" alt="First shot" />
+        <img id="photo-1" class="strip-photo" alt="Second shot" />
+        <img id="photo-2" class="strip-photo" alt="Third shot" />
+        <input id="caption" type="text" placeholder="add a caption" maxlength="40" />
+      </div>
+      <canvas id="canvas" hidden></canvas>
+    </section>
 
-  <button id="download">Download 💾</button>
+    <!-- Right: save panel -->
+    <aside class="save-col">
+      <div class="save-panel">
+        <h2 class="save-panel__title">Save Strip</h2>
+        <p class="save-panel__desc">
+          This finalizes the development process and saves your physical-style
+          strip to your gallery.
+        </p>
+        <button id="save-gallery" class="btn btn--primary" data-stub="Save to Gallery">
+          Save to Gallery
+        </button>
+        <button id="share" class="btn btn--ink">Share Artifact</button>
+        <button id="order-print" class="btn btn--ghost" data-stub="Ordering physical prints">
+          Order Physical 4&times;6 Print
+        </button>
+      </div>
 
-  <script src="photo.js"></script>
+      <div class="discard-panel">
+        <span class="mono-label mono-label--muted">Mistake?</span>
+        <button id="discard" class="btn btn--danger-outline">Discard &amp; Retake</button>
+        <p class="discard-panel__note">This session will be permanently deleted.</p>
+      </div>
+    </aside>
+  </main>
+
+  <script type="module" src="/src/customize.js"></script>
 </body>
 </html>
