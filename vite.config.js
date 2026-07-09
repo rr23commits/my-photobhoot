@@ -7,6 +7,8 @@ export default defineConfig({
       input: {
         main: "index.html",
         photo: "photo.html",
+        login: "login.html",
+        gallery: "gallery.html",
       },
     },
   },

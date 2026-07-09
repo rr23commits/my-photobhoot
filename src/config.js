@@ -6,4 +6,4 @@
  * Paste your anon key from: Supabase dashboard -> Settings -> API -> anon public.
  ****************************/
 export const SUPABASE_URL = "https://naoiuvkccokbnchqtyax.supabase.co";
-export const SUPABASE_ANON_KEY = "YOUR_SUPABASE_ANON_KEY";
+export const SUPABASE_ANON_KEY = "sb_publishable_0wYLMy5kgD5hjWz9OI6gow_BIk_P_X9";
