@@ -1,78 +1,83 @@
-# My PhotoBhoot 📸
+# PhotoBhoot
 
-My PhotoBhoot is a simple web-based photo booth project built using **HTML, CSS, and JavaScript**.  
-It allows users to interact with a camera interface and view captured photos on a separate page.
+An analog film-lab photo booth on the web. Step into the booth, take a
+three-shot strip, develop it with black-and-white film stocks and frames,
+add a caption, and save it to a private gallery.
 
----
+Built with plain HTML/CSS/JS (ES modules) + Vite, with Supabase for Google
+auth, storage, and the gallery database.
 
-## 🚀 Features
+## Run locally
 
-- Clean and responsive UI
-- Camera/photo interaction using JavaScript
-- Separate photo display page
-- Lightweight and browser-based (no backend)
+The app is native ES modules, so any static server works — no build needed:
 
----
-
-## 🛠️ Technologies Used
-
-- **HTML5** – Structure
-- **CSS3** – Styling
-- **JavaScript** – Logic and interactivity
-
----
-
-## 📁 Project Structure
-
+```bash
+python3 -m http.server 4173
+# open http://localhost:4173
 ```
 
-my-photobhoot/
-│
-├── index.html      # Main landing page
-├── style.css       # Styling for main page
-├── script.js       # JavaScript for main page
-│
-├── photo.html      # Photo display page
-├── photo.js        # JavaScript for photo page
-│
-└── README.md
+Or with the Vite dev server (hot reload):
 
-````
+```bash
+npm install
+npm run dev
+```
 
----
+Run the logic tests:
 
-## ▶️ How to Run the Project
+```bash
+npm test
+```
 
-1. Clone the repository:
-   ```bash
-   git clone git@github.com:rr23commits/my-photobhoot.git
-````
+## Pages
 
-2. Open the folder
-3. Double-click `index.html`
-   **OR**
-4. Open it using Live Server (recommended)
+| Page          | File           | Purpose                                   |
+| ------------- | -------------- | ----------------------------------------- |
+| Landing       | `index.html`   | Brand home + entry points                 |
+| Booth Session | `booth.html`   | Live camera, exposure/flash, 3-shot strip |
+| Selection     | `photo.html`   | Film stocks, frames, caption, save/share  |
+| Gallery       | `gallery.html` | Saved strips (view / download / delete)   |
+| Sign in       | `login.html`   | Google sign-in                            |
 
----
+## Project structure
 
-## 📌 Future Improvements
+```
+index.html / booth.html / photo.html / gallery.html / login.html
+style.css                 design tokens + all screen styles
+src/
+  capture.js              booth controller (camera, capture)
+  customize.js            selection & save controller
+  strip.js                shared canvas: captureFrame + composeStrip
+  filters.js              film stocks + frames (single source of truth)
+  storage.js              localStorage helpers for the in-progress strip
+  supabase.js             Supabase client (auth guard, helpers)
+  config.js               Supabase URL + publishable key
+vite.config.js            multi-page build config
+scripts/smoke.mjs         node logic tests
+```
 
-* Add photo filters
-* Allow photo download
-* Improve mobile responsiveness
-* Store photos locally or in cloud
+## Customizing
 
----
+- **Add a film stock:** append an object to `FILM_STOCKS` in `src/filters.js`
+  (`id`, `name`, `css` filter string, `stock`, `flavor`). It auto-renders as
+  a chip and bakes into the export.
+- **Add a frame color:** append `{ id, name, color }` to `FRAMES` in the same
+  file.
 
-## 👤 Author
+## Backend (Supabase)
 
-**Rudrakshi Rai**
-GitHub: [rr23commits](https://github.com/rr23commits)
+- **Auth:** Google OAuth (users are stored automatically in `auth.users`).
+- **Database:** a `strips` table (`user_id`, `image_url`, `caption`,
+  `film_stock`, `frame`, `created_at`) with row-level security so each user
+  sees only their own strips.
+- **Storage:** a public `strips` bucket holding the composed PNGs, with
+  insert/delete policies scoped to each user's folder.
+- Set your project URL and publishable (anon) key in `src/config.js`.
 
----
+## Deploy (Vercel)
 
-⭐ If you like this project, consider giving it a star!
-
-````
-
----
+1. Push to GitHub, then import the repo at vercel.com (Vite is auto-detected:
+   build `npm run build`, output `dist`).
+2. In Supabase → Authentication → URL Configuration, add your Vercel domain as
+   the Site URL and to the redirect allowlist (`https://<domain>/**`). Keep
+   `http://localhost:4173/**` for local dev.
